@@ -20,7 +20,7 @@ This suite evaluates the CloudBees Unify MCP server by running natural-language 
 
 The suite authenticates with the CloudBees MCP server via OAuth 2.0 Authorization Code + PKCE. A headed browser is only opened when no valid cached token exists. The token is pre-fetched once on the pytest controller before any worker spawns.
 
-**Detailed diagrams:** [token-generation.md](token-generation.md)
+**Detailed diagrams:** [token-generation.md](docs/token-generation.md)
 
 Key points:
 - `.auth-tokens.json` — stores `access_token`, `refresh_token`, `expires_in`, `issued_at`
@@ -34,7 +34,7 @@ Key points:
 
 Defined in `conftest.py`. Session-scoped — one MCP connection per pytest session (or per xdist worker). Opens the connection once, holds it alive across all tests, closes cleanly at session teardown.
 
-**Detailed diagrams:** [mcp-runner.md](mcp-runner.md)
+**Detailed diagrams:** [mcp-runner.md](docs/mcp-runner.md)
 
 Key points:
 - Background Task pattern keeps the `async with` lifetime in one Task to satisfy anyio's cancel-scope constraint
@@ -48,7 +48,7 @@ Key points:
 
 Defined in `conftest.py`. Session-scoped — the judge LLM wrapper is constructed once and shared across all test items.
 
-**Detailed diagrams:** [eval-model.md](eval-model.md)
+**Detailed diagrams:** [eval-model.md](docs/eval-model.md)
 
 | `EVAL_MODEL_PROVIDER` | Model used | Notes |
 |----------------------|-----------|-------|
@@ -64,7 +64,7 @@ Fixture runs lazily after `load_dotenv()` fires — safer than a module-level co
 
 Each parametrized item (`test_smoke[smoke-N]`) is a **single turn**: one prompt → one agentic loop → one evaluation. No conversation history is carried from one test to the next.
 
-**Detailed diagrams:** [single-turn-test.md](single-turn-test.md)
+**Detailed diagrams:** [single-turn-test.md](docs/single-turn-test.md)
 
 ### Score breakdown
 
@@ -82,7 +82,7 @@ Threshold 0.7 means partial credit can still pass. Each `run()` starts with `mes
 
 After the test run, `generate_report.py` merges all per-test JSON files into one self-contained HTML dashboard.
 
-**Detailed diagrams:** [report-generation.md](report-generation.md)
+**Detailed diagrams:** [report-generation.md](docs/report-generation.md)
 
 ```bash
 # Merge all reports/*.json automatically
